@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        'rest_framework',  # Django REST Framework
+    'rest_framework',  # Django REST Framework
     'rest_framework.authtoken',  # Token authentication for Djoser
+    'BrainGames',
     'djoser',  # Djoser for user management
 ]
 
@@ -91,9 +93,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'BrainGames',
         'USER': 'postgres',
-        'PASSWORD': '561333',
+        'PASSWORD': 'bee561333',
         'HOST': 'db',  # The service name defined in Docker Compose
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 
@@ -137,3 +139,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Define subdirectories for images and videos
+IMAGE_DIR = 'images'
+
+# Make sure the directories exist
+os.makedirs(os.path.join(MEDIA_ROOT, IMAGE_DIR), exist_ok=True)

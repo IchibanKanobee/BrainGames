@@ -1,25 +1,24 @@
 # backend/Dockerfile
 
 # Use official Python image as base
-FROM python:3.9
+FROM python:3.8-slim
 
 # Set working directory
-WORKDIR /app
+WORKDIR /backend
 
 # Copy the requirements file and install dependencies
-COPY requirements.txt .
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the Django application code
-COPY . .
+COPY . /backend
 
-# Run migrations and collect static files
-RUN python manage.py migrate
-RUN python manage.py collectstatic --noinput
+# Expose port 8001 for Django
+EXPOSE 8001
 
-# Expose port 8000 for Django
-EXPOSE 8000
+# Define environment variable
+ENV DJANGO_SETTINGS_MODULE=LumaLab.settings
 
-# Start Django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+RUN chmod +x /backend/entrypoint.sh
 
+ENTRYPOINT ["/backend/entrypoint.sh"]

@@ -10,7 +10,7 @@ function Login() {
     event.preventDefault();
 
     axios
-      .post("http://localhost:8000/auth/token/login/", {
+      .post("http://localhost:8001/auth/token/login/", {
         email: email,
         password: password,
       })
