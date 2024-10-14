@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/colors.css";
 import "./Auth.css";
@@ -6,7 +6,6 @@ import userImage from "../images/user.png";
 
 const Auth = ({ currentUser, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
@@ -26,14 +25,10 @@ const Auth = ({ currentUser, onLogout }) => {
   return (
     <div className="auth">
       <button
-        className={`auth-button ${currentUser ? "logged-in" : ""}`}
+        className={`auth-button ${currentUser ? "logged-in" : "logged-out"}`}
         onClick={handleButtonClick}
       >
-        {currentUser ? (
-          currentUser.username
-        ) : (
-          <img src={userImage} alt="Log in" width="80" height="80" />
-        )}
+        {currentUser && <span>{currentUser.username}</span>}
       </button>
       {dropdownOpen && (
         <div className="dropdown-auth">

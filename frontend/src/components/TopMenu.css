@@ -11,17 +11,14 @@
   width: 100%;
   z-index: 1000; /* Ensure it stays on top */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.menu-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+  height: 60px; /* Set a fixed height for the top menu */
 }
 
 .menu-right {
   display: flex;
   justify-content: flex-end;
+  align-items: center; /* Center align items vertically */
+  height: 100%; /* Ensure it takes the full height of the menu */
 }
 
 /* Styles for the menu buttons and images */
@@ -36,4 +33,10 @@
 .menu-button img {
   width: 30px;
   height: 30px;
+}
+
+.auth-button {
+  /* Add this class for the user button */
+  height: 80%; /* Set height to 80% of TopMenu */
+  padding: 0 15px; /* Optional: Add padding for better click area */
 }

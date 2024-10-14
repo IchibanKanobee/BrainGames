@@ -4,6 +4,9 @@ import AddGameTypeForm from "./components/AddGameTypeForm"; // Make sure the imp
 import UpdateGameTypeForm from "./components/UpdateGameTypeForm";
 import TopMenu from "./components/TopMenu";
 import { getLoggedInUserString } from "./components/utils.js";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import Home from "./components/Home";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -39,6 +42,12 @@ const App = () => {
         <TopMenu currentUser={currentUser} onLogout={handleLogout} />
         <Routes>
           {/* Define the route for the AddGameTypeForm */}
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/login"
+            element={<Login currentUser={currentUser} onLogin={handleLogin} />}
+          />
+          <Route path="/home" element={<Home />} />
           <Route path="/add-game-type" element={<AddGameTypeForm />} />
           <Route path="/update-game-type" element={<UpdateGameTypeForm />} />
           {/* Add other routes here as needed */}

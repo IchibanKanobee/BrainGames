@@ -18,6 +18,18 @@
 
 .auth-button.logged-in {
   background-color: var(--primary-color);
+  padding: 10px 15px;
+}
+
+.auth-button.logged-out {
+  width: 50px; /* Set the width of the button */
+  height: 50px; /* Set the height of the button */
+  background-image: url("../images/user.png"); /* Path to your bitmap image */
+  background-size: cover; /* Ensure the image covers the entire button */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent image from repeating */
+  border: none; /* Remove border */
+  cursor: pointer; /* Change cursor to pointer */
 }
 
 .auth-button img {

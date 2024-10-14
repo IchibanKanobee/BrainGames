@@ -9,16 +9,23 @@ const TopMenu = ({ currentUser, onLogout }) => {
   const navigate = useNavigate();
 
   const handleHomeClick = () => {
-    //  navigate("/home");
+    navigate("/home");
   };
 
   return (
     <div className="top-menu">
+      <div className="menu-left">
       <button onClick={handleHomeClick} className="menu-button">
         <img src={homeImage} alt="Home" />
       </button>
+      </div>
       <div className="menu-right">
-        <Auth currentUser={currentUser} onLogout={onLogout} />
+        <Auth
+          currentUser={currentUser}
+          onLogout={onLogout}
+          className="auth-button"
+        />{" "}
+        {/* Ensure Auth component applies the new class */}
       </div>
     </div>
   );
