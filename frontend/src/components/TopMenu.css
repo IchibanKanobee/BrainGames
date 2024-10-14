@@ -1,0 +1,39 @@
+/* TopMenu.css */
+
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0; /* Background color for the top menu */
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it stays on top */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Styles for the menu buttons and images */
+.menu-button {
+  margin-right: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.menu-button img {
+  width: 30px;
+  height: 30px;
+}

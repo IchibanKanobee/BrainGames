@@ -1,17 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AddGameTypeForm from "./components/AddGameTypeForm"; // Make sure the import path is correct
 import UpdateGameTypeForm from "./components/UpdateGameTypeForm";
+import TopMenu from "./components/TopMenu";
+import { getLoggedInUserString } from "./components/utils.js";
 
 const App = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    // Fetch current user data, if logged in
+    const loggedInUser = getLoggedInUserString(); // Implement this function to fetch user data
+    if (loggedInUser) {
+      setCurrentUser(JSON.parse(loggedInUser));
+    }
+  }, []);
+
+  const handleLogin = (token, newUser) => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+
+    localStorage.setItem("authToken", token);
+    const newUserString = JSON.stringify(newUser).replace(/\n/g, "");
+    localStorage.setItem("user", JSON.stringify(newUserString));
+
+    setCurrentUser(newUser);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("authToken");
+  };
+
   return (
     <Router>
-      <Routes>
-        {/* Define the route for the AddGameTypeForm */}
-        <Route path="/add-game-type" element={<AddGameTypeForm />} />
-        <Route path="/update-game-type" element={<UpdateGameTypeForm />} />
-        {/* Add other routes here as needed */}
-      </Routes>
+      <div className="App">
+        <TopMenu currentUser={currentUser} onLogout={handleLogout} />
+        <Routes>
+          {/* Define the route for the AddGameTypeForm */}
+          <Route path="/add-game-type" element={<AddGameTypeForm />} />
+          <Route path="/update-game-type" element={<UpdateGameTypeForm />} />
+          {/* Add other routes here as needed */}
+        </Routes>
+      </div>
     </Router>
   );
 };
