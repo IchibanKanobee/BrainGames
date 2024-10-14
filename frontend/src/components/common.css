@@ -1,0 +1,83 @@
+/* common.css */
+
+.form-container,
+.add-game-type-form {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2,
+.add-game-type-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group select,
+.form-group input,
+.form-container input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Add space above and between buttons */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px; /* Add space above the button */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Add horizontal space between buttons */
+button + button {
+  margin-top: 10px; /* Vertical space between buttons */
+}
+
+/* Style for the Delete button */
+button.delete-btn {
+  background-color: #dc3545 !important; /* Red background for Delete button */
+  margin-top: 10px; /* Space above Delete button */
+}
+
+button.delete-btn:hover {
+  background-color: #c82333 !important; /* Darker red on hover */
+}
+
+.error,
+.success {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}

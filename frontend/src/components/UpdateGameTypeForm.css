@@ -1,0 +1,9 @@
+/* AddGameTypeForm.css */
+
+@import "./common.css";
+
+/* Add vertical space between Old Game Type Name and New Game Type Name */
+.form-group {
+  margin-bottom: 20px; /* Increased space between fields */
+}
+

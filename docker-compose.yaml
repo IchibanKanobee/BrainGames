@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   backend:
     build:
       context: ./backend
@@ -9,6 +8,7 @@ services:
       - ./backend:/backend
     ports:
       - "8001:8000"
+      - "5678:5678" # Debug port
     container_name: bgdjango_container
     depends_on:
       - db

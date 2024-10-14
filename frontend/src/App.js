@@ -1,14 +1,19 @@
 import React from "react";
-import "./App.css";
-import Login from "./components/Login";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import AddGameTypeForm from "./components/AddGameTypeForm"; // Make sure the import path is correct
+import UpdateGameTypeForm from "./components/UpdateGameTypeForm";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Welcome to LumaLabReact</h1>
-      <Login />
-    </div>
+    <Router>
+      <Routes>
+        {/* Define the route for the AddGameTypeForm */}
+        <Route path="/add-game-type" element={<AddGameTypeForm />} />
+        <Route path="/update-game-type" element={<UpdateGameTypeForm />} />
+        {/* Add other routes here as needed */}
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
