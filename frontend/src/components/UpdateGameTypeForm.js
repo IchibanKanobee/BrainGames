@@ -7,23 +7,30 @@ const UpdateOrDeleteGameType = () => {
   const [newName, setNewName] = useState("");
   const [gameTypes, setGameTypes] = useState([]); // Store game types
 
-  useEffect(() => {
-    // Fetch game types from the Django API
-    const fetchGameTypes = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8001/api/game-types/"
-        );
-        setGameTypes(response.data);
-      } catch (error) {
-        console.error("Error fetching game types", error);
-      }
-    };
+  // Function to fetch game types from the API
+  const fetchGameTypes = async () => {
+    try {
+      const response = await axios.get("http://localhost:8001/api/game-types/");
+      setGameTypes(response.data);
+    } catch (error) {
+      console.error("Error fetching game types", error);
+    }
+  };
 
+  // useEffect to fetch game types on component mount
+  useEffect(() => {
     fetchGameTypes();
   }, []);
 
   const handleUpdate = async () => {
+    if (!oldName || !newName) {
+      alert("Please select an old game type name and enter a new name.");
+      return;
+    }
+    if (oldName === newName) {
+      alert("Please make sure the new name is different from the old name.");
+      return;
+    }
     try {
       const response = await axios.put(
         "http://localhost:8001/api/update-game-type/",
@@ -33,19 +40,29 @@ const UpdateOrDeleteGameType = () => {
         }
       );
       console.log("Game type updated successfully:", response.data);
+      alert("Game type updated successfully!");
     } catch (error) {
       console.error("Error updating game type", error);
+      alert("Error updating game type.");
     }
   };
 
   const handleDelete = async () => {
+    if (!oldName) {
+      alert("Please select a game type name to delete.");
+      return;
+    }
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/delete-game-type/${oldName}/`
+        `http://localhost:8001/api/delete-game-type/${oldName}/`
       );
       console.log("Game type deleted successfully:", response.data);
+      alert("Game type deleted successfully!");
+      setOldName(""); // Clear the selected name after deletion
+      setNewName(""); // Optionally clear the new name input
     } catch (error) {
       console.error("Error deleting game type", error);
+      alert("Error deleting game type.");
     }
   };
 
@@ -55,7 +72,11 @@ const UpdateOrDeleteGameType = () => {
 
       <div className="form-group">
         <label>Old Game Type Name:</label>
-        <select value={oldName} onChange={(e) => setOldName(e.target.value)}>
+        <select
+          value={oldName}
+          onChange={(e) => setOldName(e.target.value)}
+          onFocus={fetchGameTypes} // Fetch game types when clicked
+        >
           <option value="">Select a game type</option>
           {gameTypes.map((gameType) => (
             <option key={gameType.game_type_id} value={gameType.game_type_name}>

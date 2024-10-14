@@ -20,8 +20,8 @@ from .models import GameType
 
 class UpdateGameTypeView(APIView):
     def put(self, request):
-        old_name = request.data.get('old_name')
-        new_name = request.data.get('new_name')
+        old_name = request.data.get('oldName')
+        new_name = request.data.get('newName')
 
         try:
             game_type = GameType.objects.get(game_type_name=old_name)
