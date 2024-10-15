@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AddGameTypeForm from "./components/AddGameTypeForm"; // Make sure the import path is correct
-import UpdateGameTypeForm from "./components/UpdateGameTypeForm";
+import UpdateGameTypeForm from "./components/UpdateOrDeleteGameTypeForm.js";
 import TopMenu from "./components/TopMenu";
 import { getLoggedInUserString } from "./components/utils.js";
 import Register from "./components/Register";

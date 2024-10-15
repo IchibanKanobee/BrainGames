@@ -151,7 +151,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Define subdirectories for images and videos
-IMAGE_DIR = 'images'
+IMAGE_UPLOAD_DIR = 'images'
 
 # Make sure the directories exist
-os.makedirs(os.path.join(MEDIA_ROOT, IMAGE_DIR), exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, IMAGE_UPLOAD_DIR), exist_ok=True)

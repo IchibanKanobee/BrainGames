@@ -1,7 +1,7 @@
 /* colors.css */
 :root {
   --primary-color: #007bff;
-  --primary-highlighted-color: #0045ff;
+  --primary-hover-color: #0045ff;
   --secondary-color: #2ecc71;
   --accent-color: #e74c3c;
   --background-color: #f0f0f0;
@@ -25,7 +25,7 @@ button {
 }
 
 button:hover {
-  background-color: var(--primary-highlight-color);
+  background-color: var(--primary-hover-color);
 }
 
 h1,

@@ -16,12 +16,14 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-        
+
+    '''
     if not debugpy.is_client_connected():
         debugpy.listen(("0.0.0.0", 5678))  # Bind to all IPs inside the container on port 5678
 
     print("Waiting for debugger to attach...")
     debugpy.wait_for_client()  # Wait for the debugger to attach before continuing
+    '''       
         
     execute_from_command_line(sys.argv)
 
