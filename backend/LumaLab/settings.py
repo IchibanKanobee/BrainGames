@@ -155,3 +155,5 @@ IMAGE_UPLOAD_DIR = 'images'
 
 # Make sure the directories exist
 os.makedirs(os.path.join(MEDIA_ROOT, IMAGE_UPLOAD_DIR), exist_ok=True)
+
+DEFAULT_GAME_TYPE_IMAGE_PATH = 'images/default.jpeg'

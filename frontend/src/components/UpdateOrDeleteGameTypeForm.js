@@ -8,6 +8,7 @@ const UpdateOrDeleteGameType = () => {
   const [gameTypes, setGameTypes] = useState([]); // Store game types
   const [selectedImage, setSelectedImage] = useState(null); // New image for updating
   const [currentImage, setCurrentImage] = useState(""); // To display current image
+  const [imagePreview, setImagePreview] = useState(null); // Thumbnail preview for new image
 
   // Function to fetch game types from the API
   const fetchGameTypes = async () => {
@@ -36,19 +37,81 @@ const UpdateOrDeleteGameType = () => {
     fetchGameTypes();
   }, []);
 
-  const handleUpdate = async () => {
-    if (!oldName || !newName) {
-      alert("Please select an old game type name and enter a new name.");
-      return;
+  // Handle image selection and generate a thumbnail preview
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedImage(file);
+
+    // Generate image preview
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null); // Clear preview if no file is selected
     }
-    if (oldName === newName) {
-      alert("Please make sure the new name is different from the old name.");
+  };
+
+  const handleUpdate = async () => {
+    if (!oldName) {
+      alert("Please select an old game type name.");
       return;
     }
 
+    // Check if both the name and image are the same as old ones
+    if (!newName && !selectedImage) {
+      alert("No changes detected. Please update either the name or the image.");
+      return;
+    }
+
+    // If new name is blank but a new image is selected, submit the old name and new image
+    if (!newName && selectedImage) {
+      const formData = new FormData();
+      formData.append("oldName", oldName);
+      formData.append("image", selectedImage);
+
+      try {
+        const response = await axios.put(
+          "http://localhost:8001/api/update-game-type/",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        alert("Game type updated successfully!");
+        fetchGameTypes(); // Refresh game types after update
+        setSelectedImage(null); // Clear selected image
+        setImagePreview(null); // Clear image preview
+        return;
+      } catch (error) {
+        console.error("Error updating game type", error);
+        alert("Error updating game type.");
+      }
+    }
+
+    // Check if the new name and image are the same as old ones
+    const currentGameType = gameTypes.find(
+      (gameType) => gameType.game_type_name === oldName
+    );
+    if (
+      currentGameType &&
+      currentGameType.game_type_name === newName &&
+      !selectedImage
+    ) {
+      alert("No changes detected. Please update either the name or the image.");
+      return;
+    }
+
+    // Proceed with form submission for both name and image change
     const formData = new FormData();
     formData.append("oldName", oldName);
-    formData.append("newName", newName);
+    if (newName) {
+      formData.append("newName", newName);
+    }
     if (selectedImage) {
       formData.append("image", selectedImage); // Include image in the update request
     }
@@ -66,6 +129,7 @@ const UpdateOrDeleteGameType = () => {
       alert("Game type updated successfully!");
       fetchGameTypes(); // Refresh game types after update
       setSelectedImage(null); // Clear selected image
+      setImagePreview(null); // Clear image preview
       setNewName(""); // Clear new name input
     } catch (error) {
       console.error("Error updating game type", error);
@@ -140,10 +204,16 @@ const UpdateOrDeleteGameType = () => {
         <input
           type="file"
           id="image"
-          onChange={(e) => setSelectedImage(e.target.files[0])} // Handle new image selection
+          onChange={handleImageChange} // Handle new image selection and preview
           accept="image/*"
         />
       </div>
+
+      {imagePreview && (
+        <div className="image-preview">
+          <img src={imagePreview} alt="New Game Type Preview" width="200" />
+        </div>
+      )}
 
       <div className="button-group">
         <button onClick={handleUpdate}>Update Game Type</button>

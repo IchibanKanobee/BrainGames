@@ -11,10 +11,12 @@ def get_image_upload_path(instance, filename):
 class GameType(models.Model):
     game_type_id = models.AutoField(primary_key=True)
     game_type_name = models.CharField(max_length=255, unique=True)
-    game_type_image = models.ImageField(upload_to=get_image_upload_path, default='images/default.jpeg')  # Add the image field
+    game_type_image = models.ImageField(upload_to=get_image_upload_path, default=settings.DEFAULT_GAME_TYPE_IMAGE_PATH)  # Add the image field
 
     def __str__(self):
         return self.game_type_name
+    
+    
 # Game Model
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
@@ -25,6 +27,7 @@ class Game(models.Model):
  
     def __str__(self):
         return self.game_name
+
 
 # GameResult Model
 class GameResult(models.Model):
