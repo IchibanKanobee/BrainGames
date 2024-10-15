@@ -1,0 +1,17 @@
+.game-types-grid {
+  padding: 20px;
+}
+
+.game-type-item {
+  text-align: center;
+}
+
+.game-type-item img {
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-type-item p {
+  margin-top: 10px;
+  font-size: 16px;
+}

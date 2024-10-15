@@ -31,7 +31,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: bee561333
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./backend/postgres_data:/var/lib/postgresql/data
     container_name: bgpostgres_container
     restart: always
     ports:

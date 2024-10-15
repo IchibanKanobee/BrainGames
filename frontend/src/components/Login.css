@@ -1,6 +1,5 @@
 /* Background image only for the authentication pages */
 .auth-page {
-  background-image: url("./background.webp"); /* Replace with the actual path to your image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
