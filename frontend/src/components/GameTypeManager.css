@@ -1,0 +1,19 @@
+/* TagSearch.css */
+
+.tag-search {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between TagManager and search options */
+}
+
+.search-options {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between radio buttons and search button */
+}
