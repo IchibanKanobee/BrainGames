@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import GameType
-from .serializers import GameTypeSerializer
+from .serializers import GameTypeSerializer, GameSerializer
 from django.core.files.storage import default_storage
 from django.conf import settings
 
@@ -71,3 +71,14 @@ class GameTypeListView(APIView):
         game_types = GameType.objects.all()
         serializer = GameTypeSerializer(game_types, many=True)
         return Response(serializer.data)
+
+
+class AddGameView(APIView):
+    def post(self, request):
+        serializer = GameSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -9,14 +9,14 @@ const AddGameForm = () => {
   const [gameDescription, setGameDescription] = useState("");
   const [gameImage, setGameImage] = useState(null);
   const [gameTypes, setGameTypes] = useState([]);
-  const [showGameTypeList, setShowGameTypeList] = useState(false); // Control visibility of the game type list
+  const [showGameTypeList, setShowGameTypeList] = useState(true); // Control visibility of the game type list
 
   const handleGameTypeChange = (selectedGameTypes) => {
     setGameTypes(selectedGameTypes);
   };
 
   const handleImageChange = (e) => {
-    setGameImage(e.target.files[0]);
+    setGameImage(e.target.files[0]); // Get the first file from the input
   };
 
   const handleSubmit = (e) => {
@@ -27,15 +27,16 @@ const AddGameForm = () => {
     formData.append("game_complexity", gameComplexity);
     formData.append("game_description", gameDescription);
     formData.append("game_image", gameImage);
-    formData.append(
-      "game_types",
-      JSON.stringify(gameTypes.map((gt) => gt.game_type_id))
-    );
+
+    // Append selected game types as an array
+    gameTypes.forEach((gameType) => {
+      formData.append("game_types", gameType.game_type_id);
+    });
 
     axios
-      .post("http://localhost:8001/api/games/", formData, {
+      .post("http://localhost:8001/api/add-game/", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data", // Ensure the request is sent as form data
         },
       })
       .then((response) => {
@@ -46,9 +47,10 @@ const AddGameForm = () => {
         setGameDescription("");
         setGameImage(null);
         setGameTypes([]);
+        setShowGameTypeList(false);
       })
       .catch((error) => {
-        console.error("Error adding game:", error);
+        console.error("Error adding game:", error.response?.data || error);
       });
   };
 
@@ -93,7 +95,7 @@ const AddGameForm = () => {
       <GameTypeManager
         currentGameTypes={gameTypes}
         onGameTypesChange={handleGameTypeChange}
-        showGameTypeList={true}
+        showGameTypeList={showGameTypeList}
         setShowGameTypeList={setShowGameTypeList}
       />
 
