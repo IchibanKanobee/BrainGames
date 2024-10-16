@@ -13,16 +13,19 @@ const UpdateOrDeleteGameForm = () => {
   const [gameImage, setGameImage] = useState(null);
   const [gameTypes, setGameTypes] = useState([]);
 
-  // Fetch all games on component mount
+  // Function to fetch games from the API
+  const fetchGames = async () => {
+    try {
+      const response = await axios.get("http://localhost:8001/api/games/");
+      setGames(response.data); // Set the list of games
+    } catch (error) {
+      console.error("Error fetching games", error);
+    }
+  };
+
+  // Fetch all games on component mount using fetchGames function
   useEffect(() => {
-    axios
-      .get("http://localhost:8001/api/games")
-      .then((response) => {
-        setGames(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching games:", error);
-      });
+    fetchGames();
   }, []);
 
   // When a game is selected, populate the form with its details

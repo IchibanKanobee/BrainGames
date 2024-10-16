@@ -105,12 +105,12 @@ class UpdateGameView(APIView):
 
     
 # API view to get all game types
-class GamesListView(APIView):
+class GameListView(APIView):
     def get(self, request):
         games = Game.objects.all()
         serializer = GameSerializer(games, many=True)
         return Response(serializer.data)
-
+    
 
 class DeleteGameView(APIView):
     def delete(self, request, old_name, format=None):
