@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AddGameForm from "./components/AddGameForm";
+import UpdateGameForm from "./components/UpdateGameForm";
 import AddGameTypeForm from "./components/AddGameTypeForm";
-import UpdateGameTypeForm from "./components/UpdateOrDeleteGameTypeForm.js";
+import UpdateOrDeleteGameTypeForm from "./components/UpdateOrDeleteGameTypeForm.js";
 import TopMenu from "./components/TopMenu";
 import { getLoggedInUserString } from "./components/utils.js";
 import Register from "./components/Register";
@@ -51,7 +52,12 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/add-game" element={<AddGameForm />} />
           <Route path="/add-game-type" element={<AddGameTypeForm />} />
-          <Route path="/update-game-type" element={<UpdateGameTypeForm />} />
+          <Route
+            path="/update-game-type"
+            element={<UpdateOrDeleteGameTypeForm />}
+          />
+          <Route path="/games/update/:gameId" component={UpdateGameForm} />
+
           {/* Add other routes here as needed */}
         </Routes>
       </div>

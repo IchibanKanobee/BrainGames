@@ -55,15 +55,16 @@ class UpdateGameTypeView(APIView):
         
         
 class DeleteGameTypeView(APIView):
-    def delete(self, request):
-        game_type_name = request.data.get('game_type_name')
-
+    def delete(self, request, old_name, format=None):
         try:
-            game_type = GameType.objects.get(game_type_name=game_type_name)
+            game_type = GameType.objects.get(game_type_name=old_name)
             game_type.delete()
-            return Response({"message": "Game type deleted successfully"}, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except GameType.DoesNotExist:
-            return Response({"error": "Game type not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
 
 # API view to get all game types
 class GameTypeListView(APIView):
@@ -82,3 +83,22 @@ class AddGameView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+class UpdateGameView(APIView):
+    def get_object(self, pk):
+        try:
+            return Game.objects.get(pk=pk)
+        except Game.DoesNotExist:
+            return None
+
+    def put(self, request, pk, format=None):
+        game = self.get_object(pk)
+        if game is None:
+            return Response({"detail": "Game not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = GameSerializer(game, data=request.data, partial=True)  # Allow partial updates
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    

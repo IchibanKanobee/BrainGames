@@ -8,15 +8,16 @@ const AddGameForm = () => {
   const [gameComplexity, setGameComplexity] = useState(1);
   const [gameDescription, setGameDescription] = useState("");
   const [gameImage, setGameImage] = useState(null);
+  const [gameRoutePath, setGameRoutePath] = useState(""); // New state for Route Path
   const [gameTypes, setGameTypes] = useState([]);
-  const [showGameTypeList, setShowGameTypeList] = useState(true); // Control visibility of the game type list
+  const [showGameTypeList, setShowGameTypeList] = useState(false); // Control visibility of the game type list
 
   const handleGameTypeChange = (selectedGameTypes) => {
     setGameTypes(selectedGameTypes);
   };
 
   const handleImageChange = (e) => {
-    setGameImage(e.target.files[0]); // Get the first file from the input
+    setGameImage(e.target.files[0]);
   };
 
   const handleSubmit = (e) => {
@@ -26,17 +27,21 @@ const AddGameForm = () => {
     formData.append("game_name", gameName);
     formData.append("game_complexity", gameComplexity);
     formData.append("game_description", gameDescription);
-    formData.append("game_image", gameImage);
+    formData.append("game_route_path", gameRoutePath); // Add the Route Path to form data
 
-    // Append selected game types as an array
-    gameTypes.forEach((gameType) => {
-      formData.append("game_types", gameType.game_type_id);
+    // Append the image file only if an image was selected
+    if (gameImage) {
+      formData.append("game_image", gameImage);
+    }
+
+    gameTypes.forEach((gt) => {
+      formData.append("game_types", gt.game_type_id);
     });
 
     axios
       .post("http://localhost:8001/api/add-game/", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Ensure the request is sent as form data
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
@@ -46,11 +51,12 @@ const AddGameForm = () => {
         setGameComplexity(1);
         setGameDescription("");
         setGameImage(null);
+        setGameRoutePath(""); // Clear the Route Path field
         setGameTypes([]);
         setShowGameTypeList(false);
       })
       .catch((error) => {
-        console.error("Error adding game:", error.response?.data || error);
+        console.error("Error adding game:", error);
       });
   };
 
@@ -88,6 +94,16 @@ const AddGameForm = () => {
       </div>
 
       <div className="form-group">
+        <label>Game Route Path</label>
+        <input
+          type="text" // Change input type to Route Path
+          value={gameRoutePath}
+          onChange={(e) => setGameRoutePath(e.target.value)} // Update state for Rout Path
+          required
+        />
+      </div>
+
+      <div className="form-group">
         <label>Game Image</label>
         <input type="file" onChange={handleImageChange} />
       </div>
@@ -95,7 +111,7 @@ const AddGameForm = () => {
       <GameTypeManager
         currentGameTypes={gameTypes}
         onGameTypesChange={handleGameTypeChange}
-        showGameTypeList={showGameTypeList}
+        showGameTypeList={true}
         setShowGameTypeList={setShowGameTypeList}
       />
 

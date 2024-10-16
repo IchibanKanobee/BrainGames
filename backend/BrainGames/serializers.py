@@ -12,4 +12,4 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = ['game_id', 'game_name', 'game_types', 'game_complexity',
-                  'game_url', 'game_description', 'game_image']
+                  'game_route_path', 'game_description', 'game_image']

@@ -25,7 +25,7 @@ class Game(models.Model):
     game_complexity = models.IntegerField(default=1,
         validators=[MinValueValidator(1), MaxValueValidator(100)])
 
-    game_url = models.CharField(max_length=255, default='') #the url will include parameters for the same component but different complexities
+    game_route_path = models.CharField(max_length=255, default='') #the url will include parameters for the same component but different complexities
     game_description = models.CharField(max_length=500, default='')
     game_image = models.ImageField(upload_to=get_image_upload_path, default=settings.DEFAULT_GAME_IMAGE_PATH)
 
@@ -34,11 +34,13 @@ class Game(models.Model):
 
 
 # GameResult Model
-class GameResult(models.Model):
+class GameSession(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     game_score = models.IntegerField()
-    played_at = models.DateTimeField(auto_now_add=True)
+    game_level = models.IntegerField()
+    started_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField()
 
     def __str__(self):
         return f'{self.user.username} - {self.game.game_name} - {self.game_score}'
