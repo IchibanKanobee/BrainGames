@@ -1,0 +1,78 @@
+/* Container styling */
+.update-delete-game-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group styling */
+.update-delete-game-form .form-group {
+  margin-bottom: 15px;
+}
+
+/* Label styling */
+.update-delete-game-form label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Input and select styling */
+.update-delete-game-form input[type="text"],
+.update-delete-game-form input[type="number"],
+.update-delete-game-form input[type="file"],
+.update-delete-game-form textarea,
+.update-delete-game-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Button styling */
+.update-delete-game-form button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-delete-game-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Delete button styling */
+.update-delete-game-form button[type="button"] {
+  background-color: #dc3545;
+}
+
+.update-delete-game-form button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+/* Adjust spacing between update and delete buttons */
+.update-delete-game-form button + button {
+  margin-left: 10px;
+}
+
+/* Styling for file input */
+.update-delete-game-form input[type="file"] {
+  padding: 5px;
+}
+
+/* Textarea styling */
+.update-delete-game-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
