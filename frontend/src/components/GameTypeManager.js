@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getLoggedInUserString } from "./utils.js";
-import "./styles/colors.css";
+import "../styles/colors.css";
 import "./GameTypeManager.css";
 
 const GameTypeManager = (props) => {
@@ -10,18 +10,13 @@ const GameTypeManager = (props) => {
   const [currentGameTypes, setCurrentGameTypes] = useState([]);
 
   useEffect(() => {
-    //    const token = localStorage.getItem("authToken"); // Retrieve the token from localStorage
     const currentUser = JSON.parse(getLoggedInUserString());
 
     axios
       .get("http://localhost:8001/api/game-types/", {
         params: {
-          user: currentUser?.id, // Include current user ID in the request if needed
+          user: currentUser?.id,
         },
-
-        //        headers: {
-        //          Authorization: `Token ${token}`,
-        //        },
       })
       .then((response) => {
         const gameTypes = response.data;
@@ -34,30 +29,29 @@ const GameTypeManager = (props) => {
 
   useEffect(() => {
     if (props.currentGameTypes && allGameTypes.length) {
-      setCurrentGameTypes(props.currentGameTypes); // Initialize current GameTypes with initialGameTypes
+      setCurrentGameTypes(props.currentGameTypes);
     }
-  }, [props.currentGameTypes, allGameTypes]); // Dependencies: props.initialGameTypes and allGameTypes
+  }, [props.currentGameTypes, allGameTypes]);
 
   useEffect(() => {
     if (props.currentGameTypes) {
-      setCurrentGameTypes(props.currentGameTypes); // Initialize current GameTypes with initialGameTypes
+      setCurrentGameTypes(props.currentGameTypes);
     }
-  }, [currentGameTypes]); // Dependencies: props.initialGameTypes and allGameTypes
+  }, [currentGameTypes]);
 
   useEffect(() => {
     if (props.clearGameTypes) {
-      setCurrentGameTypes([]); // Clear GameTypes when the clearGameTypes prop is true
+      setCurrentGameTypes([]);
     }
   }, [props.clearGameTypes]);
 
   const addGameType = (gameTypeId) => {
-    // Check if the selected GameType is already in the selectedGameTypes array
     const isAlreadyCurrent = currentGameTypes.some(
       (gameType) => gameType.game_type_id === gameTypeId
     );
 
     if (isAlreadyCurrent) {
-      return; // If the GameType is already selected, do nothing
+      return;
     }
 
     if (gameTypeId) {
@@ -67,27 +61,25 @@ const GameTypeManager = (props) => {
 
       let updatedGameTypes = [...currentGameTypes];
 
-      // Add the new GameType to the list
       updatedGameTypes.push(selectedGameTypeObject);
       setCurrentGameTypes(updatedGameTypes);
-      setSelectedGameType(""); // Clear the selection
+      setSelectedGameType("");
 
       if (props.onGameTypesChange) {
-        props.onGameTypesChange(updatedGameTypes); // Pass search data to the parent component
+        props.onGameTypesChange(updatedGameTypes);
       }
 
-      props.setShowGameTypeList(true); // Show the GameType list when a new GameType is added
+      props.setShowGameTypeList(true);
     }
   };
 
   const removeGameType = (gameTypeToRemove) => {
-    const oldGameTypes = currentGameTypes;
-    const newGameTypes = oldGameTypes.filter(
-      (gameType) => gameType.game_type_id !== gameTypeToRemove.Ggame_type_id
+    const newGameTypes = currentGameTypes.filter(
+      (gameType) => gameType.game_type_id !== gameTypeToRemove.game_type_id
     );
     setCurrentGameTypes(newGameTypes);
     if (props.onGameTypesChange) {
-      props.onGameTypesChange(newGameTypes); // Pass search data to the parent component
+      props.onGameTypesChange(newGameTypes);
     }
   };
 
@@ -97,40 +89,42 @@ const GameTypeManager = (props) => {
         className="GameType-dropdown"
         value={selectedGameType}
         onChange={(e) => {
-          const GameTypeId = e.target.value;
-          setSelectedGameType(GameTypeId); // Update selected GameType state
-          addGameType(GameTypeId); // Add GameType immediately
+          const gameTypeId = e.target.value;
+          setSelectedGameType(gameTypeId);
+          addGameType(gameTypeId);
         }}
       >
         <option value="" disabled>
           Select GameTypes
         </option>
-        {allGameTypes.map((GameType) => {
-          // Check if this GameType is already in currentGameTypes
+        {allGameTypes.map((gameType) => {
           const isDisabled = currentGameTypes.some(
             (currentGameType) =>
-              currentGameType.GameType_id === GameType.GameType_id
+              currentGameType.game_type_id === gameType.game_type_id
           );
 
           return (
             <option
-              key={GameType.GameType_id}
-              value={GameType.GameType_id}
+              key={gameType.game_type_id}
+              value={gameType.game_type_id}
               disabled={isDisabled}
             >
-              {GameType.name}
+              {gameType.game_type_name}{" "}
+              {/* Updated to display game_type_name */}
             </option>
           );
         })}
       </select>
+
       {props.showGameTypeList && (
         <div className="GameType-list">
-          {currentGameTypes.map((GameType, index) => (
+          {currentGameTypes.map((gameType, index) => (
             <div key={index} className="GameType-item">
-              {GameType.name}
+              {gameType.game_type_name}{" "}
+              {/* Updated to display game_type_name */}
               <span
                 className="remove-GameType"
-                onClick={() => removeGameType(GameType)}
+                onClick={() => removeGameType(gameType)}
               >
                 ×
               </span>

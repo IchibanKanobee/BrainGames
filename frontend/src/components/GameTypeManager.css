@@ -1,19 +1,72 @@
-/* TagSearch.css */
-
-.tag-search {
+/* Container for the entire GameType manager */
+.GameType-manager-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 400px; /* Limit the max width for better layout */
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown for selecting game types */
+.GameType-dropdown {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #333; /* Ensure text color is visible */
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.GameType-dropdown:focus {
+  border-color: #007bff; /* Highlight the border on focus */
+}
+
+/* Dropdown options styling */
+.GameType-dropdown option {
+  color: #333; /* Set option text color */
+  background-color: #fff; /* Ensure option background is white */
+}
+
+/* List of selected game types */
+.GameType-list {
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  margin-top: 10px;
 }
 
-.search-container {
-  display: flex;
+/* Each selected game type item */
+.GameType-item {
+  display: inline-flex;
   align-items: center;
-  gap: 20px; /* Space between TagManager and search options */
+  padding: 5px 10px;
+  border-radius: 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: default;
+  white-space: nowrap;
 }
 
-.search-options {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* Space between radio buttons and search button */
+/* Remove button for game type */
+.remove-GameType {
+  margin-left: 8px;
+  padding: 0 6px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.remove-GameType:hover {
+  color: #ff4d4f;
+  transition: color 0.3s ease;
 }
