@@ -12,6 +12,7 @@ const UpdateOrDeleteGameForm = () => {
   const [gameRoutePath, setGameRoutePath] = useState("");
   const [gameImage, setGameImage] = useState(null);
   const [gameTypes, setGameTypes] = useState([]);
+  const [showGameTypeList, setShowGameTypeList] = useState(true); // Control visibility of the tag list
 
   // Function to fetch games from the API
   const fetchGames = async () => {
@@ -177,6 +178,8 @@ const UpdateOrDeleteGameForm = () => {
           <GameTypeManager
             currentGameTypes={gameTypes}
             onGameTypesChange={handleGameTypeChange}
+            showGameTypeList={true}
+            setShowGameTypeList={setShowGameTypeList}
           />
 
           <div className="form-group">
