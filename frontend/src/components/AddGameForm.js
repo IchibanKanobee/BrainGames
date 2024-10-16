@@ -5,7 +5,7 @@ import "./AddGameForm.css";
 
 const AddGameForm = () => {
   const [gameName, setGameName] = useState("");
-  const [gameLevel, setGameLevel] = useState(1);
+  const [gameComplexity, setGameComplexity] = useState(1);
   const [gameDescription, setGameDescription] = useState("");
   const [gameImage, setGameImage] = useState(null);
   const [gameTypes, setGameTypes] = useState([]);
@@ -24,7 +24,7 @@ const AddGameForm = () => {
 
     const formData = new FormData();
     formData.append("game_name", gameName);
-    formData.append("game_level", gameLevel);
+    formData.append("game_complexity", gameComplexity);
     formData.append("game_description", gameDescription);
     formData.append("game_image", gameImage);
     formData.append(
@@ -42,7 +42,7 @@ const AddGameForm = () => {
         console.log("Game added successfully:", response.data);
         // Clear the form after successful submission
         setGameName("");
-        setGameLevel(1);
+        setGameComplexity(1);
         setGameDescription("");
         setGameImage(null);
         setGameTypes([]);
@@ -65,11 +65,11 @@ const AddGameForm = () => {
       </div>
 
       <div className="form-group">
-        <label>Game Level</label>
+        <label>Game Complexity</label>
         <input
           type="number"
-          value={gameLevel}
-          onChange={(e) => setGameLevel(e.target.value)}
+          value={gameComplexity}
+          onChange={(e) => setGameComplexity(e.target.value)}
           min="1"
           max="100"
           required

@@ -22,10 +22,10 @@ class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
     game_name = models.CharField(max_length=255)
     game_types = models.ManyToManyField(GameType, related_name='games')
-    game_level = models.IntegerField(default=1,
+    game_complexity = models.IntegerField(default=1,
         validators=[MinValueValidator(1), MaxValueValidator(100)])
 
-    game_url = models.CharField(max_length=255, default='') #the url will include parameters for the same component but different levels
+    game_url = models.CharField(max_length=255, default='') #the url will include parameters for the same component but different complexities
     game_description = models.CharField(max_length=500, default='')
     game_image = models.ImageField(upload_to=get_image_upload_path, default=settings.DEFAULT_GAME_IMAGE_PATH)
 
