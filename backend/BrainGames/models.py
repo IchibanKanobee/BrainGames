@@ -20,7 +20,7 @@ class GameType(models.Model):
 # Game Model
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
-    game_name = models.CharField(max_length=255)
+    game_name = models.CharField(max_length=255, unique=True)
     game_types = models.ManyToManyField(GameType, related_name='games')
     game_complexity = models.IntegerField(default=1,
         validators=[MinValueValidator(1), MaxValueValidator(100)])
