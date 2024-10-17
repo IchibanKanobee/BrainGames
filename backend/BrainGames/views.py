@@ -75,14 +75,30 @@ class GameTypeListView(APIView):
 
 class AddGameView(APIView):
     def post(self, request):
-        serializer = GameSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Extract game_type_ids from the request data
+        game_types_str = request.data.get('game_types', [])
 
+        # Remove game_types from the request data to prevent issues during initial save
+        request_data = request.data.copy()
+        request_data.pop('game_types', None)
+
+        # Create the Game object (without assigning game_types yet)
+        serializer = GameSerializer(data=request_data)
+        if serializer.is_valid():
+            game = serializer.save()
+
+            # Now, handle the ManyToMany field explicitly by assigning game types
+            if game_types_str:
+                game_type_dicts = json.loads(game_types_str)
+                game_type_ids = [game_type['game_type_id'] for game_type in game_type_dicts]
+                game_types = GameType.objects.filter(game_type_id__in=game_type_ids)
+                game.game_types.set(game_types)  # Assign the related game types
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+        
     
 class UpdateGameView(APIView):
     def put(self, request, pk):

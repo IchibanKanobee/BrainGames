@@ -34,9 +34,8 @@ const AddGameForm = () => {
       formData.append("game_image", gameImage);
     }
 
-    gameTypes.forEach((gt) => {
-      formData.append("game_types", gt.game_type_id);
-    });
+    const game_types_string = JSON.stringify(gameTypes);
+    formData.append("game_types", game_types_string);
 
     axios
       .post("http://localhost:8001/api/add-game/", formData, {

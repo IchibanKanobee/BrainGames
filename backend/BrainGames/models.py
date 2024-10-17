@@ -40,7 +40,7 @@ class GameSession(models.Model):
     game_score = models.IntegerField()
     game_level = models.IntegerField()
     started_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField()
+    finished_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.game.game_name} - {self.game_score}'
