@@ -6,6 +6,9 @@ from .models import GameType, Game
 from .serializers import GameTypeSerializer, GameSerializer
 from django.core.files.storage import default_storage
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+import json
+
 
 class AddGameTypeView(APIView):
     def post(self, request):
@@ -15,10 +18,6 @@ class AddGameTypeView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import GameType
 
 class UpdateGameTypeView(APIView):
     def put(self, request):
@@ -86,23 +85,51 @@ class AddGameView(APIView):
 
     
 class UpdateGameView(APIView):
-    def get_object(self, pk):
+    def put(self, request, pk):
+        # Fetch the game object
+        game = get_object_or_404(Game, pk=pk)
+
+        # Extract game_type_ids from request data (JSON-encoded string)
+        game_type_ids_str = request.data.get('game_types', '[]')  # Default to an empty list if not provided
+
         try:
-            return Game.objects.get(pk=pk)
-        except Game.DoesNotExist:
-            return None
+            # Parse the JSON string into a Python list
+            game_type_ids = json.loads(game_type_ids_str)
 
-    def put(self, request, pk, format=None):
-        game = self.get_object(pk)
-        if game is None:
-            return Response({"detail": "Game not found."}, status=status.HTTP_404_NOT_FOUND)
+            # Ensure the parsed data is a list of integers
+            if not isinstance(game_type_ids, list):
+                return Response({'error': 'game_types must be a list.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = GameSerializer(game, data=request.data, partial=True)  # Allow partial updates
+            # Convert the items in the list to integers
+            game_type_ids = [int(id) for id in game_type_ids]
+        except (json.JSONDecodeError, ValueError):
+            return Response({'error': 'Invalid JSON format or invalid game_type_ids.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Clear the existing game types
+        game.game_types.clear()
+
+        # Fetch the new game types and associate them with the game
+        new_game_types = GameType.objects.filter(game_type_id__in=game_type_ids)
+        game.game_types.set(new_game_types)
+
+        # Update other game fields using the serializer
+        serializer = GameSerializer(game, data=request.data, partial=True)  # partial=True allows updating some fields
+
         if serializer.is_valid():
-            serializer.save()
+            serializer.save()  # Save the updated game object
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+# Delete a game
+class DeleteGameView(APIView):
+    def delete(self, request, pk):
+        game = get_object_or_404(Game, pk=pk)  # Get the game by primary key (game_id)
+        game.delete()
+        return Response({"message": "Game deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+ 
     
 # API view to get all game types
 class GameListView(APIView):
@@ -110,16 +137,4 @@ class GameListView(APIView):
         games = Game.objects.all()
         serializer = GameSerializer(games, many=True)
         return Response(serializer.data)
-    
-
-class DeleteGameView(APIView):
-    def delete(self, request, old_name, format=None):
-        try:
-            game = Game.objects.get(game_name=old_name)
-            game.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except GameType.DoesNotExist:
-            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     

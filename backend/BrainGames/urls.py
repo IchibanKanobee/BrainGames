@@ -12,7 +12,7 @@ urlpatterns = [
     path('delete-game-type/<str:old_name>/', DeleteGameTypeView.as_view(), name='delete-game-type'),
     path('game-types/', GameTypeListView.as_view(), name='game-type-list'),
     path('add-game/', AddGameView.as_view(), name='add-game'),
-    path('api/games/<int:pk>/update/', UpdateGameView.as_view(), name='update-game'),
-    path('delete-game/<str:old_game_name>/', DeleteGameView.as_view(), name='delete-game'),
+    path('games/<int:pk>/update/', UpdateGameView.as_view(), name='update-game'),
+    path('games/<int:pk>/delete/', DeleteGameView.as_view(), name='delete-game'),
 
 ]

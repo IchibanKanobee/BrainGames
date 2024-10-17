@@ -71,7 +71,7 @@ const UpdateOrDeleteGameForm = () => {
 
     axios
       .put(
-        `http://localhost:8001/api/update-game/${selectedGame.game_id}/`,
+        `http://localhost:8001/api/games/${selectedGame.game_id}/update/`,
         formData,
         {
           headers: {
@@ -91,9 +91,7 @@ const UpdateOrDeleteGameForm = () => {
   // Delete the selected game
   const handleDelete = () => {
     axios
-      .delete(
-        `http://localhost:8001/api/delete-game/${selectedGame.game_name}/`
-      )
+      .delete(`http://localhost:8001/api/games/${selectedGame.game_id}/delete/`)
       .then(() => {
         alert("Game deleted successfully!");
         // Reset the form after deletion
