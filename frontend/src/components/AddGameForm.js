@@ -8,6 +8,7 @@ const AddGameForm = () => {
   const [gameComplexity, setGameComplexity] = useState(1);
   const [gameDescription, setGameDescription] = useState("");
   const [gameImage, setGameImage] = useState(null);
+  const [gameImagePreview, setGameImagePreview] = useState(null); // New state for image preview
   const [gameRoutePath, setGameRoutePath] = useState(""); // New state for Route Path
   const [gameTypes, setGameTypes] = useState([]);
   const [showGameTypeList, setShowGameTypeList] = useState(false); // Control visibility of the game type list
@@ -17,7 +18,14 @@ const AddGameForm = () => {
   };
 
   const handleImageChange = (e) => {
-    setGameImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setGameImage(file);
+      setGameImagePreview(URL.createObjectURL(file)); // Create preview URL
+    } else {
+      setGameImage(null);
+      setGameImagePreview(null); // Reset if no file is selected
+    }
   };
 
   const handleSubmit = (e) => {
@@ -50,6 +58,7 @@ const AddGameForm = () => {
         setGameComplexity(1);
         setGameDescription("");
         setGameImage(null);
+        setGameImagePreview(null); // Reset image preview
         setGameRoutePath(""); // Clear the Route Path field
         setGameTypes([]);
         setShowGameTypeList(false);
@@ -95,9 +104,9 @@ const AddGameForm = () => {
       <div className="form-group">
         <label>Game Route Path</label>
         <input
-          type="text" // Change input type to Route Path
+          type="text"
           value={gameRoutePath}
-          onChange={(e) => setGameRoutePath(e.target.value)} // Update state for Rout Path
+          onChange={(e) => setGameRoutePath(e.target.value)}
           required
         />
       </div>
@@ -105,6 +114,13 @@ const AddGameForm = () => {
       <div className="form-group">
         <label>Game Image</label>
         <input type="file" onChange={handleImageChange} />
+        {gameImagePreview && (
+          <img
+            src={gameImagePreview}
+            alt="Selected Game"
+            style={{ width: "200px", marginTop: "10px" }} // Thumbnail size
+          />
+        )}
       </div>
 
       <GameTypeManager
