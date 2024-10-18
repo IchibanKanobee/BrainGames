@@ -10,7 +10,9 @@ const UpdateOrDeleteGameForm = () => {
   const [gameComplexity, setGameComplexity] = useState(1);
   const [gameDescription, setGameDescription] = useState("");
   const [gameRoutePath, setGameRoutePath] = useState("");
-  const [gameImage, setGameImage] = useState(null);
+  const [gameImage, setGameImage] = useState(null); // Stores the file selected by user
+  const [currentImageUrl, setCurrentImageUrl] = useState(""); // Stores the URL of the current image
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(""); // Stores the preview URL for new selected image
   const [gameTypes, setGameTypes] = useState([]);
   const [showGameTypeList, setShowGameTypeList] = useState(true); // Control visibility of the tag list
 
@@ -40,11 +42,23 @@ const UpdateOrDeleteGameForm = () => {
     setGameDescription(selectedGame.game_description);
     setGameRoutePath(selectedGame.game_route_path);
     setGameTypes(selectedGame.game_types); // Assuming game_types are available in the response
-    setGameImage(null); // Reset image, as we're not fetching images in the initial API call
+    setCurrentImageUrl(selectedGame.game_image); // Set current image URL
+    setGameImage(null); // Reset selected image file
+    setImagePreviewUrl(""); // Clear the image preview
   };
 
+  // Handle image file selection and create preview URL for new image
   const handleImageChange = (e) => {
-    setGameImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setGameImage(file);
+
+    // Create a URL for the new selected image to preview it
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreviewUrl(previewUrl);
+    } else {
+      setImagePreviewUrl(""); // Clear preview if no image is selected
+    }
   };
 
   const handleGameTypeChange = (selectedGameTypes) => {
@@ -102,6 +116,8 @@ const UpdateOrDeleteGameForm = () => {
         setGameRoutePath("");
         setGameTypes([]);
         setGameImage(null);
+        setCurrentImageUrl(""); // Reset current image
+        setImagePreviewUrl(""); // Clear the preview
       })
       .catch((error) => {
         console.error("Error deleting game:", error);
@@ -171,6 +187,32 @@ const UpdateOrDeleteGameForm = () => {
           <div className="form-group">
             <label>Game Image</label>
             <input type="file" onChange={handleImageChange} />
+
+            {/* Display the image preview below the file input */}
+            <div className="image-preview">
+              {/* Show current image thumbnail if available and no new image is selected */}
+              {currentImageUrl && !imagePreviewUrl && (
+                <>
+                  <p>Current Image:</p>
+                  <img
+                    src={`http://localhost:8001${currentImageUrl}`}
+                    alt="Current Game Thumbnail"
+                    style={{ maxWidth: "200px", maxHeight: "200px" }}
+                  />
+                </>
+              )}
+              {/* Show selected new image preview if a new file is selected */}
+              {imagePreviewUrl && (
+                <>
+                  <p>Selected Image:</p>
+                  <img
+                    src={imagePreviewUrl}
+                    alt="Selected Game Thumbnail"
+                    style={{ maxWidth: "200px", maxHeight: "200px" }}
+                  />
+                </>
+              )}
+            </div>
           </div>
 
           <GameTypeManager
