@@ -10,6 +10,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import GamesGrid from "./components/GamesGrid";
+import SnakeGameForm from "./components/SnakeGameForm";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -59,6 +60,7 @@ const App = () => {
           />
           <Route path="/update-game" element={<UpdateOrDeleteGameForm />} />
           <Route path="/game-types/:gameTypeId" element={<GamesGrid />} />
+          <Route path="/snake-game" element={<SnakeGameForm />} />
 
           {/* Add other routes here as needed */}
         </Routes>
