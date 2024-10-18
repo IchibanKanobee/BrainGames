@@ -99,6 +99,7 @@ const UpdateOrDeleteGameForm = () => {
       })
       .catch((error) => {
         console.error("Error updating game:", error);
+        alert("Error updating game:", error);
       });
   };
 
@@ -121,6 +122,7 @@ const UpdateOrDeleteGameForm = () => {
       })
       .catch((error) => {
         console.error("Error deleting game:", error);
+        alert("Error deleting game:", error);
       });
   };
 

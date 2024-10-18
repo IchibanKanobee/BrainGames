@@ -1,3 +1,104 @@
-/* AddGameTypeForm.css */
+/* AddGameForm.css */
 
-@import "./common.css";
+/* Main container for the form */
+.add-game-form {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Form title */
+.add-game-form h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* General form styling */
+.add-game-form .form-group {
+  margin-bottom: 20px;
+}
+
+.add-game-form .form-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.add-game-form .form-group input,
+.add-game-form .form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.add-game-form .form-group textarea {
+  resize: vertical;
+  height: 120px;
+}
+
+/* Game Route Path input */
+.add-game-form .form-group input[type="text"] {
+  font-family: monospace;
+}
+
+/* Complexity slider styling */
+.add-game-form .form-group input[type="number"] {
+  width: 80px;
+  text-align: center;
+}
+
+/* Game Image section */
+.add-game-form .form-group input[type="file"] {
+  font-size: 14px;
+}
+
+.add-game-form img {
+  display: block;
+  margin-top: 15px;
+  max-width: 200px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* GameTypeManager styling */
+.game-type-manager {
+  margin-top: 20px;
+}
+
+/* Submit button */
+.add-game-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-game-form button:hover {
+  background-color: #218838;
+}
+
+/* Add visual effect for disabled state */
+.add-game-form button:disabled {
+  background-color: #c6c8ca;
+  cursor: not-allowed;
+}
+
+/* Adding space around GameTypeManager */
+.game-type-manager {
+  margin-bottom: 20px;
+}

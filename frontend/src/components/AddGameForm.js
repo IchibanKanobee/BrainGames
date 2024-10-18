@@ -53,6 +53,8 @@ const AddGameForm = () => {
       })
       .then((response) => {
         console.log("Game added successfully:", response.data);
+        alert("Game added successfully!");
+
         // Clear the form after successful submission
         setGameName("");
         setGameComplexity(1);
@@ -65,6 +67,7 @@ const AddGameForm = () => {
       })
       .catch((error) => {
         console.error("Error adding game:", error);
+        alert("Error adding game:", error);
       });
   };
 
