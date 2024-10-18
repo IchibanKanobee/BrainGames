@@ -1,0 +1,56 @@
+/* GamesGrid.css */
+
+.games-grid {
+  display: grid;
+  grid-gap: 20px;
+  padding: 20px;
+  justify-items: center; /* Centers the grid items */
+}
+
+.game-item {
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-item:hover {
+  transform: translateY(-5px); /* Moves the card up on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.game-item img {
+  max-width: 100%; /* Ensures the image is responsive */
+  height: auto;
+  border-radius: 4px;
+}
+
+.game-item p {
+  margin: 10px 0 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-transform: capitalize;
+}
+
+/* Make grid responsive */
+@media (max-width: 1024px) {
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on small devices */
+  }
+}
+
+@media (max-width: 480px) {
+  .games-grid {
+    grid-template-columns: 1fr; /* 1 column on mobile devices */
+  }
+}

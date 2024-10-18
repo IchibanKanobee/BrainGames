@@ -42,7 +42,7 @@ const GameTypesGrid = ({
               height: `${imageHeight}px`,
               cursor: "pointer",
             }}
-            onClick={() => handleImageClick(gameType.id)}
+            onClick={() => handleImageClick(gameType.game_type_id)}
           />
           <p>{gameType.game_type_name}</p>
         </div>

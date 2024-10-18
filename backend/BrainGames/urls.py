@@ -1,6 +1,9 @@
 from django.urls import path, include
 from django.contrib import admin
-from .views import AddGameTypeView, UpdateGameTypeView, DeleteGameTypeView, GameTypeListView, AddGameView, UpdateGameView, GameListView, DeleteGameView
+from .views import AddGameTypeView, UpdateGameTypeView, DeleteGameTypeView, \
+GameTypeListView, AddGameView, UpdateGameView, GameListView, DeleteGameView
+
+from .models import games_by_type
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,5 +17,6 @@ urlpatterns = [
     path('add-game/', AddGameView.as_view(), name='add-game'),
     path('games/<int:pk>/update/', UpdateGameView.as_view(), name='update-game'),
     path('games/<int:pk>/delete/', DeleteGameView.as_view(), name='delete-game'),
+    path('api/games/', games_by_type, name='games_by_type'),
 
 ]

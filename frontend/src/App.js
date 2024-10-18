@@ -9,6 +9,7 @@ import { getLoggedInUserString } from "./components/utils.js";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Home from "./components/Home";
+import GamesGrid from "./components/GamesGrid";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -57,6 +58,7 @@ const App = () => {
             element={<UpdateOrDeleteGameTypeForm />}
           />
           <Route path="/update-game" element={<UpdateOrDeleteGameForm />} />
+          <Route path="/game-types/:gameTypeId" element={<GamesGrid />} />
 
           {/* Add other routes here as needed */}
         </Routes>

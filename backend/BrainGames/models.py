@@ -3,10 +3,20 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 import os
+from django.http import JsonResponse
 
 def get_image_upload_path(instance, filename):
     return os.path.join(settings.IMAGE_UPLOAD_DIR, filename)
 
+def games_by_type(request):
+    game_type_id = request.GET.get('game_type_id')
+    if game_type_id:
+        games = Game.objects.filter(game_types__id=game_type_id).values('game_id', 'game_name', 'game_image')
+        return JsonResponse(list(games), safe=False)
+    else:
+        return JsonResponse({'error': 'Game type not found'}, status=400)
+    
+    
 # GameType Model
 class GameType(models.Model):
     game_type_id = models.AutoField(primary_key=True)
