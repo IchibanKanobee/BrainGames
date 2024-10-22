@@ -6,6 +6,7 @@ const initialDirection = { x: 1, y: 0 };
 
 function SnakeGameForm({
   cellCount = 20,
+  gridWidth = 400, // Set the total grid width in pixels
   borderWidth = "2px",
   lineWidth = "1px",
 }) {
@@ -13,6 +14,10 @@ function SnakeGameForm({
   const [food, setFood] = useState({ x: 5, y: 5 });
   const [direction, setDirection] = useState(initialDirection);
   const [isGameOver, setIsGameOver] = useState(false);
+
+  // Calculate the size of each cell based on the gridWidth and cellCount
+  const cellSize =
+    (gridWidth - (cellCount - 1) * parseInt(lineWidth)) / cellCount;
 
   // Handle Keyboard Controls
   useEffect(() => {
@@ -98,6 +103,8 @@ function SnakeGameForm({
     <div
       className="game-board"
       style={{
+        "--grid-width": `${gridWidth}px`, // Pass gridWidth dynamically
+        "--cell-size": `${cellSize}px`, // Pass calculated cell size
         "--border-width": borderWidth,
         "--line-width": lineWidth,
         "--cell-count": cellCount,
