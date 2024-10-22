@@ -63,7 +63,7 @@ const App = () => {
           <Route
             path="/snake-game"
             element={
-              <SnakeGameForm cellCount={15} gridWidth={800} speed={500} />
+              <SnakeGameForm cellCount={12} gridWidth={800} speed={300} />
             }
           />
 
