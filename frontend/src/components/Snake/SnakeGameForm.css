@@ -13,6 +13,7 @@
   width: calc(
     var(--grid-width) + 2 * var(--border-width)
   ); /* Ensure the grid fits within the game board */
+  margin: 0 auto; /* Center the game board horizontally */
 }
 
 .grid {
@@ -36,7 +37,15 @@
 }
 
 .food {
-  background-color: red;
+  background-image: url("apple.png"); /* Use apple image for the food */
+  background-size: contain; /* Ensure the image fits the entire cell */
+  background-position: center; /* Center the image within the cell */
+  background-repeat: no-repeat; /* Avoid tiling of the image */
+  width: 100%; /* Ensure the food takes up the full width of the cell */
+  height: 100%; /* Ensure the food takes up the full height of the cell */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .controls {
