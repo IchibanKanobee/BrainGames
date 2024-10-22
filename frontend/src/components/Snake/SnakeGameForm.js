@@ -84,6 +84,7 @@ function SnakeGameForm({
           )
         ) {
           setIsGameOver(true);
+          setGameState("stopped"); // Change state to stopped on game over
           return prevSnake;
         }
 
@@ -96,7 +97,7 @@ function SnakeGameForm({
     return () => clearInterval(interval);
   }, [direction, food, isGameOver, cellCount, gameState, speed]);
 
-  // Start/Pause/Resume Game
+  // Start/Pause/Restart Game
   const handleGameState = () => {
     if (gameState === "initial") {
       setGameState("started");
@@ -150,17 +151,19 @@ function SnakeGameForm({
           ? "Start"
           : gameState === "paused"
           ? "Resume"
+          : gameState === "stopped"
+          ? "Restart"
           : "Pause"}
       </button>
 
       {/* Mobile Controls */}
       <div className="controls">
-        <button onClick={() => handleDirection({ x: 0, y: -1 })}>↑</button>
+        <button onClick={() => setDirection({ x: 0, y: -1 })}>↑</button>
         <div>
-          <button onClick={() => handleDirection({ x: -1, y: 0 })}>←</button>
-          <button onClick={() => handleDirection({ x: 1, y: 0 })}>→</button>
+          <button onClick={() => setDirection({ x: -1, y: 0 })}>←</button>
+          <button onClick={() => setDirection({ x: 1, y: 0 })}>→</button>
         </div>
-        <button onClick={() => handleDirection({ x: 0, y: 1 })}>↓</button>
+        <button onClick={() => setDirection({ x: 0, y: 1 })}>↓</button>
       </div>
     </div>
   );
