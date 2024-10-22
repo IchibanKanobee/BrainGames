@@ -52,6 +52,22 @@ function SnakeGameForm({
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, [isGameOver, gameState]);
 
+  // Generate Food Position
+  const generateFood = () => {
+    let newFood;
+    do {
+      newFood = {
+        x: Math.floor(Math.random() * cellCount),
+        y: Math.floor(Math.random() * cellCount),
+      };
+    } while (
+      snake.some(
+        (segment) => segment.x === newFood.x && segment.y === newFood.y
+      )
+    );
+    return newFood;
+  };
+
   // Move the Snake
   useEffect(() => {
     if (isGameOver || gameState !== "started") return;
@@ -65,10 +81,7 @@ function SnakeGameForm({
 
         // Check if food is eaten
         if (newHead.x === food.x && newHead.y === food.y) {
-          setFood({
-            x: Math.floor(Math.random() * cellCount),
-            y: Math.floor(Math.random() * cellCount),
-          });
+          setFood(generateFood()); // Call the function to generate new food
         } else {
           newSnake.pop();
         }
@@ -111,10 +124,7 @@ function SnakeGameForm({
     } else if (gameState === "stopped") {
       // Reset the game state to initial conditions when stopped
       setSnake(initialSnake);
-      setFood({
-        x: Math.floor(Math.random() * cellCount),
-        y: Math.floor(Math.random() * cellCount),
-      });
+      setFood(generateFood()); // Generate new food position
       setDirection(initialDirection);
       setIsGameOver(false);
       setGameState("started");
