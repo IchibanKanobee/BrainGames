@@ -13,8 +13,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(var(--grid-size), 1fr);
-  grid-template-rows: repeat(var(--grid-size), 1fr);
+  grid-template-columns: repeat(var(--cell-count), 1fr);
+  grid-template-rows: repeat(var(--cell-count), 1fr);
   gap: var(--line-width); /* Separation lines between cells */
   background-color: white; /* Color of separation lines */
   background-image: url("grass.png");

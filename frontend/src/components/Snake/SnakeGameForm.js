@@ -100,7 +100,7 @@ function SnakeGameForm({
       style={{
         "--border-width": borderWidth,
         "--line-width": lineWidth,
-        "--grid-size": cellCount,
+        "--cell-count": cellCount,
       }}
     >
       {isGameOver ? (
