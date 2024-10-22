@@ -35,6 +35,9 @@ function SnakeGameForm({
     } while (
       snake.some(
         (segment) => segment.x === newFood.x && segment.y === newFood.y
+      ) ||
+      decorations.some(
+        (decoration) => decoration.x === newFood.x && decoration.y === newFood.y
       )
     );
     return newFood;
