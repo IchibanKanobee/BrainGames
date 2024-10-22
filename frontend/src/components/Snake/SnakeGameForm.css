@@ -16,18 +16,21 @@
   grid-template-columns: repeat(var(--grid-size), 1fr);
   grid-template-rows: repeat(var(--grid-size), 1fr);
   gap: var(--line-width); /* Separation lines between cells */
-  background-color: black; /* Border around the grid */
+  background-color: white; /* Color of separation lines */
+  background-image: url("grass.png");
+  background-size: cover; /* Ensure background fits the grid */
+  position: relative;
 }
 
 .cell {
-  width: 20px; /* Can be adjusted for the desired size */
-  height: 20px; /* Can be adjusted for the desired size */
-  background-color: lightgray;
-  border: var(--line-width) solid white;
+  width: 20px; /* Adjust size of the cells */
+  height: 20px; /* Adjust size of the cells */
+  background-color: transparent; /* Transparent so grid lines are visible */
+  border: var(--line-width) solid white; /* Border for visible grid lines */
 }
 
 .snake {
-  background-color: green;
+  background-color: yellow;
 }
 
 .food {

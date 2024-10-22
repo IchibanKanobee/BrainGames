@@ -60,7 +60,7 @@ const App = () => {
           />
           <Route path="/update-game" element={<UpdateOrDeleteGameForm />} />
           <Route path="/game-types/:gameTypeId" element={<GamesGrid />} />
-          <Route path="/snake-game" element={<SnakeGameForm gridSize={30} />} />
+          <Route path="/snake-game" element={<SnakeGameForm cellCount={30} />} />
 
           {/* Add other routes here as needed */}
         </Routes>

@@ -5,7 +5,7 @@ const initialSnake = [{ x: 10, y: 10 }];
 const initialDirection = { x: 1, y: 0 };
 
 function SnakeGameForm({
-  gridSize = 20,
+  cellCount = 20,
   borderWidth = "2px",
   lineWidth = "1px",
 }) {
@@ -59,8 +59,8 @@ function SnakeGameForm({
         // Check if food is eaten
         if (newHead.x === food.x && newHead.y === food.y) {
           setFood({
-            x: Math.floor(Math.random() * gridSize),
-            y: Math.floor(Math.random() * gridSize),
+            x: Math.floor(Math.random() * cellCount),
+            y: Math.floor(Math.random() * cellCount),
           });
         } else {
           newSnake.pop();
@@ -69,9 +69,9 @@ function SnakeGameForm({
         // Check collision with walls or snake body
         if (
           newHead.x < 0 ||
-          newHead.x >= gridSize ||
+          newHead.x >= cellCount ||
           newHead.y < 0 ||
-          newHead.y >= gridSize ||
+          newHead.y >= cellCount ||
           newSnake.some(
             (segment) => segment.x === newHead.x && segment.y === newHead.y
           )
@@ -87,7 +87,7 @@ function SnakeGameForm({
 
     const interval = setInterval(moveSnake, 200);
     return () => clearInterval(interval);
-  }, [direction, food, isGameOver, gridSize]);
+  }, [direction, food, isGameOver, cellCount]);
 
   // Mobile controls (direction changes)
   const handleDirection = (newDirection) => {
@@ -100,7 +100,7 @@ function SnakeGameForm({
       style={{
         "--border-width": borderWidth,
         "--line-width": lineWidth,
-        "--grid-size": gridSize,
+        "--grid-size": cellCount,
       }}
     >
       {isGameOver ? (
@@ -108,8 +108,8 @@ function SnakeGameForm({
       ) : (
         <>
           <div className="grid">
-            {Array.from({ length: gridSize }, (_, y) =>
-              Array.from({ length: gridSize }, (_, x) => (
+            {Array.from({ length: cellCount }, (_, y) =>
+              Array.from({ length: cellCount }, (_, x) => (
                 <div
                   key={`${x}-${y}`}
                   className={`cell ${
