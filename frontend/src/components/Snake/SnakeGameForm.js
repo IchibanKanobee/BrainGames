@@ -15,7 +15,7 @@ function SnakeGameForm({
   const [food, setFood] = useState({ x: 5, y: 5 });
   const [direction, setDirection] = useState(initialDirection);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [gameState, setGameState] = useState("initial"); // New state variable
+  const [gameState, setGameState] = useState("initial");
   const [speed, setSpeed] = useState(initialSpeed);
 
   const cellSize =
@@ -96,6 +96,13 @@ function SnakeGameForm({
     const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
   }, [direction, food, isGameOver, cellCount, gameState, speed]);
+
+  // Show alert when game is over
+  useEffect(() => {
+    if (isGameOver) {
+      alert("The End"); // Show alert message when game ends
+    }
+  }, [isGameOver]);
 
   // Start/Pause/Restart Game
   const handleGameState = () => {
