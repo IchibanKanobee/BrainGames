@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./SnakeGameForm.css";
 
-const initialSnake = [{ x: 10, y: 10 }];
 const initialDirection = { x: 1, y: 0 };
 
 function SnakeGameForm({
-  cellCount = 20,
+  cellCount = 5, // Default to 5 for testing
   gridWidth = 400,
   borderWidth = "2px",
   lineWidth = "1px",
   initialSpeed = 200,
 }) {
-  const [snake, setSnake] = useState(initialSnake);
-  const [food, setFood] = useState({ x: 5, y: 5 });
+  const [snake, setSnake] = useState([]);
+  const [food, setFood] = useState({});
   const [direction, setDirection] = useState(initialDirection);
   const [isGameOver, setIsGameOver] = useState(false);
   const [gameState, setGameState] = useState("initial");
@@ -20,6 +19,35 @@ function SnakeGameForm({
 
   const cellSize =
     (gridWidth - (cellCount - 1) * parseInt(lineWidth)) / cellCount;
+
+  // Generate Food Position
+  const generateFood = () => {
+    let newFood;
+    do {
+      newFood = {
+        x: Math.floor(Math.random() * cellCount),
+        y: Math.floor(Math.random() * cellCount),
+      };
+    } while (
+      snake.some(
+        (segment) => segment.x === newFood.x && segment.y === newFood.y
+      )
+    );
+    return newFood;
+  };
+
+  // Initialize Game State
+  const initializeGame = () => {
+    // Randomly place the snake in a valid position
+    const startX = Math.floor(Math.random() * cellCount);
+    const startY = Math.floor(Math.random() * cellCount);
+
+    setSnake([{ x: startX, y: startY }]);
+    setFood(generateFood());
+    setDirection(initialDirection);
+    setIsGameOver(false);
+    setGameState("started");
+  };
 
   // Handle Keyboard Controls
   useEffect(() => {
@@ -52,22 +80,6 @@ function SnakeGameForm({
     return () => document.removeEventListener("keydown", handleKeyPress);
   }, [isGameOver, gameState]);
 
-  // Generate Food Position
-  const generateFood = () => {
-    let newFood;
-    do {
-      newFood = {
-        x: Math.floor(Math.random() * cellCount),
-        y: Math.floor(Math.random() * cellCount),
-      };
-    } while (
-      snake.some(
-        (segment) => segment.x === newFood.x && segment.y === newFood.y
-      )
-    );
-    return newFood;
-  };
-
   // Move the Snake
   useEffect(() => {
     if (isGameOver || gameState !== "started") return;
@@ -81,9 +93,11 @@ function SnakeGameForm({
 
         // Check if food is eaten
         if (newHead.x === food.x && newHead.y === food.y) {
-          setFood(generateFood()); // Call the function to generate new food
+          newSnake.unshift(newHead);
+          setFood(generateFood()); // Generate new food
         } else {
-          newSnake.pop();
+          newSnake.pop(); // Remove the tail
+          newSnake.unshift(newHead);
         }
 
         // Check collision with walls or snake body
@@ -92,16 +106,17 @@ function SnakeGameForm({
           newHead.x >= cellCount ||
           newHead.y < 0 ||
           newHead.y >= cellCount ||
-          newSnake.some(
-            (segment) => segment.x === newHead.x && segment.y === newHead.y
-          )
+          newSnake
+            .slice(1)
+            .some(
+              (segment) => segment.x === newHead.x && segment.y === newHead.y
+            )
         ) {
           setIsGameOver(true);
           setGameState("stopped"); // Change state to stopped on game over
           return prevSnake;
         }
 
-        newSnake.unshift(newHead);
         return newSnake;
       });
     };
@@ -120,14 +135,10 @@ function SnakeGameForm({
   // Start/Pause/Restart Game
   const handleGameState = () => {
     if (gameState === "initial") {
-      setGameState("started");
+      initializeGame(); // Initialize the game state
     } else if (gameState === "stopped") {
       // Reset the game state to initial conditions when stopped
-      setSnake(initialSnake);
-      setFood(generateFood()); // Generate new food position
-      setDirection(initialDirection);
-      setIsGameOver(false);
-      setGameState("started");
+      initializeGame(); // Initialize the game again
     } else if (gameState === "started") {
       setGameState("paused");
     } else if (gameState === "paused") {
