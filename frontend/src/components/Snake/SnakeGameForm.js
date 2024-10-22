@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./SnakeGameForm.css";
+import yellowFlower from "./yellow_flower.png";
+import blueFlower from "./blue_flower.png";
+import pinkFlower from "./pink_flower.png";
 
 const initialDirection = { x: 1, y: 0 };
-const decorationImages = [
-  "yellow_flower.png",
-  "blue_flower.png",
-  "pink_flower.png",
-];
+const decorationImages = [yellowFlower, blueFlower, pinkFlower];
 
 function SnakeGameForm({
   cellCount = 5, // Default to 5 for testing

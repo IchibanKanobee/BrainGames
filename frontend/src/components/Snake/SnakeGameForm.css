@@ -57,3 +57,15 @@ button {
   margin: 5px;
   padding: 10px;
 }
+
+.decoration-image {
+  width: 100%; /* Make the image take the full width of the cell */
+  height: 100%; /* Make the image take the full height of the cell */
+  background-size: contain; /* Ensure the image fits the entire cell */
+  background-position: center; /* Center the image within the cell */
+  background-repeat: no-repeat; /* Avoid tiling of the image */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
