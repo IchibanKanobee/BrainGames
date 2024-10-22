@@ -6,23 +6,24 @@ const initialDirection = { x: 1, y: 0 };
 
 function SnakeGameForm({
   cellCount = 20,
-  gridWidth = 400, // Set the total grid width in pixels
+  gridWidth = 400,
   borderWidth = "2px",
   lineWidth = "1px",
-  speed = 200, // Add speed as a prop with a default value of 200 milliseconds
+  initialSpeed = 200,
 }) {
   const [snake, setSnake] = useState(initialSnake);
   const [food, setFood] = useState({ x: 5, y: 5 });
   const [direction, setDirection] = useState(initialDirection);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [gameState, setGameState] = useState("initial"); // New state variable
+  const [speed, setSpeed] = useState(initialSpeed);
 
-  // Calculate the size of each cell based on the gridWidth and cellCount
   const cellSize =
     (gridWidth - (cellCount - 1) * parseInt(lineWidth)) / cellCount;
 
   // Handle Keyboard Controls
   useEffect(() => {
-    if (isGameOver) return;
+    if (isGameOver || gameState === "stopped") return;
 
     const handleKeyPress = (event) => {
       switch (event.key) {
@@ -49,11 +50,11 @@ function SnakeGameForm({
 
     document.addEventListener("keydown", handleKeyPress);
     return () => document.removeEventListener("keydown", handleKeyPress);
-  }, [isGameOver]);
+  }, [isGameOver, gameState]);
 
   // Move the Snake
   useEffect(() => {
-    if (isGameOver) return;
+    if (isGameOver || gameState !== "started") return;
 
     const moveSnake = () => {
       setSnake((prevSnake) => {
@@ -91,61 +92,76 @@ function SnakeGameForm({
       });
     };
 
-    const interval = setInterval(moveSnake, speed); // Use the speed prop for interval
+    const interval = setInterval(moveSnake, speed);
     return () => clearInterval(interval);
-  }, [direction, food, isGameOver, cellCount, speed]);
+  }, [direction, food, isGameOver, cellCount, gameState, speed]);
 
-  // Mobile controls (direction changes)
-  const handleDirection = (newDirection) => {
-    setDirection(newDirection);
+  // Start/Pause/Resume Game
+  const handleGameState = () => {
+    if (gameState === "initial") {
+      setGameState("started");
+    } else if (gameState === "stopped") {
+      // Reset the game state to initial conditions when stopped
+      setSnake(initialSnake);
+      setFood({
+        x: Math.floor(Math.random() * cellCount),
+        y: Math.floor(Math.random() * cellCount),
+      });
+      setDirection(initialDirection);
+      setIsGameOver(false);
+      setGameState("started");
+    } else if (gameState === "started") {
+      setGameState("paused");
+    } else if (gameState === "paused") {
+      setGameState("started");
+    }
   };
 
   return (
     <div
       className="game-board"
       style={{
-        "--grid-width": `${gridWidth}px`, // Pass gridWidth dynamically
-        "--cell-size": `${cellSize}px`, // Pass calculated cell size
+        "--grid-width": `${gridWidth}px`,
+        "--cell-size": `${cellSize}px`,
         "--border-width": borderWidth,
         "--line-width": lineWidth,
         "--cell-count": cellCount,
       }}
     >
-      {isGameOver ? (
-        <h1>Game Over</h1>
-      ) : (
-        <>
-          <div className="grid">
-            {Array.from({ length: cellCount }, (_, y) =>
-              Array.from({ length: cellCount }, (_, x) => (
-                <div
-                  key={`${x}-${y}`}
-                  className={`cell ${
-                    snake.some((segment) => segment.x === x && segment.y === y)
-                      ? "snake"
-                      : food.x === x && food.y === y
-                      ? "food"
-                      : ""
-                  }`}
-                ></div>
-              ))
-            )}
-          </div>
-          <h2>Score: {snake.length - 1}</h2>
+      <div className="grid">
+        {Array.from({ length: cellCount }, (_, y) =>
+          Array.from({ length: cellCount }, (_, x) => (
+            <div
+              key={`${x}-${y}`}
+              className={`cell ${
+                snake.some((segment) => segment.x === x && segment.y === y)
+                  ? "snake"
+                  : food.x === x && food.y === y
+                  ? "food"
+                  : ""
+              }`}
+            ></div>
+          ))
+        )}
+      </div>
+      <h2>Score: {snake.length - 1}</h2>
+      <button onClick={handleGameState}>
+        {gameState === "initial"
+          ? "Start"
+          : gameState === "paused"
+          ? "Resume"
+          : "Pause"}
+      </button>
 
-          {/* Mobile Controls */}
-          <div className="controls">
-            <button onClick={() => handleDirection({ x: 0, y: -1 })}>↑</button>
-            <div>
-              <button onClick={() => handleDirection({ x: -1, y: 0 })}>
-                ←
-              </button>
-              <button onClick={() => handleDirection({ x: 1, y: 0 })}>→</button>
-            </div>
-            <button onClick={() => handleDirection({ x: 0, y: 1 })}>↓</button>
-          </div>
-        </>
-      )}
+      {/* Mobile Controls */}
+      <div className="controls">
+        <button onClick={() => handleDirection({ x: 0, y: -1 })}>↑</button>
+        <div>
+          <button onClick={() => handleDirection({ x: -1, y: 0 })}>←</button>
+          <button onClick={() => handleDirection({ x: 1, y: 0 })}>→</button>
+        </div>
+        <button onClick={() => handleDirection({ x: 0, y: 1 })}>↓</button>
+      </div>
     </div>
   );
 }
