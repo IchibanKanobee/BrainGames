@@ -62,7 +62,9 @@ const App = () => {
           <Route path="/game-types/:gameTypeId" element={<GamesGrid />} />
           <Route
             path="/snake-game"
-            element={<SnakeGameForm cellCount={15} gridWidth={800} />}
+            element={
+              <SnakeGameForm cellCount={15} gridWidth={800} speed={300} />
+            }
           />
 
           {/* Add other routes here as needed */}

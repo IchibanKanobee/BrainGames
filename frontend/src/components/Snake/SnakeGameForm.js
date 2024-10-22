@@ -9,6 +9,7 @@ function SnakeGameForm({
   gridWidth = 400, // Set the total grid width in pixels
   borderWidth = "2px",
   lineWidth = "1px",
+  speed = 200, // Add speed as a prop with a default value of 200 milliseconds
 }) {
   const [snake, setSnake] = useState(initialSnake);
   const [food, setFood] = useState({ x: 5, y: 5 });
@@ -90,9 +91,9 @@ function SnakeGameForm({
       });
     };
 
-    const interval = setInterval(moveSnake, 200);
+    const interval = setInterval(moveSnake, speed); // Use the speed prop for interval
     return () => clearInterval(interval);
-  }, [direction, food, isGameOver, cellCount]);
+  }, [direction, food, isGameOver, cellCount, speed]);
 
   // Mobile controls (direction changes)
   const handleDirection = (newDirection) => {
