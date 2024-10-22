@@ -2,20 +2,25 @@ import React, { useState, useEffect } from "react";
 import "./SnakeGameForm.css";
 
 const initialDirection = { x: 1, y: 0 };
+const decorationImages = [
+  "yellow_flower.png",
+  "blue_flower.png",
+  "pink_flower.png",
+];
 
 function SnakeGameForm({
   cellCount = 5, // Default to 5 for testing
   gridWidth = 400,
   borderWidth = "2px",
   lineWidth = "1px",
-  initialSpeed = 200,
+  speed = 200,
 }) {
   const [snake, setSnake] = useState([]);
   const [food, setFood] = useState({});
+  const [decorations, setDecorations] = useState([]); // State for decorations
   const [direction, setDirection] = useState(initialDirection);
   const [isGameOver, setIsGameOver] = useState(false);
   const [gameState, setGameState] = useState("initial");
-  const [speed, setSpeed] = useState(initialSpeed);
 
   const cellSize =
     (gridWidth - (cellCount - 1) * parseInt(lineWidth)) / cellCount;
@@ -36,6 +41,32 @@ function SnakeGameForm({
     return newFood;
   };
 
+  // Generate Decorations Position
+  const generateDecorations = (count) => {
+    const newDecorations = [];
+    while (newDecorations.length < count) {
+      const newDecoration = {
+        x: Math.floor(Math.random() * cellCount),
+        y: Math.floor(Math.random() * cellCount),
+        image:
+          decorationImages[Math.floor(Math.random() * decorationImages.length)],
+      };
+
+      // Ensure the decoration does not overlap with the snake or food
+      const isOverlapping =
+        snake.some(
+          (segment) =>
+            segment.x === newDecoration.x && segment.y === newDecoration.y
+        ) ||
+        (food.x === newDecoration.x && food.y === newDecoration.y);
+
+      if (!isOverlapping) {
+        newDecorations.push(newDecoration);
+      }
+    }
+    return newDecorations;
+  };
+
   // Initialize Game State
   const initializeGame = () => {
     // Randomly place the snake in a valid position
@@ -44,6 +75,9 @@ function SnakeGameForm({
 
     setSnake([{ x: startX, y: startY }]);
     setFood(generateFood());
+    setDecorations(
+      generateDecorations(Math.floor(cellCount * cellCount * 0.05))
+    ); // Generate decorations
     setDirection(initialDirection);
     setIsGameOver(false);
     setGameState("started");
@@ -128,7 +162,7 @@ function SnakeGameForm({
   // Show alert when game is over
   useEffect(() => {
     if (isGameOver) {
-      alert("The End"); // Show alert message when game ends
+      alert("The Game is Over"); // Show alert message when game ends
     }
   }, [isGameOver]);
 
@@ -167,9 +201,27 @@ function SnakeGameForm({
                   ? "snake"
                   : food.x === x && food.y === y
                   ? "food"
+                  : decorations.some(
+                      (decoration) => decoration.x === x && decoration.y === y
+                    )
+                  ? "decoration"
                   : ""
               }`}
-            ></div>
+            >
+              {decorations.some(
+                (decoration) => decoration.x === x && decoration.y === y
+              ) && (
+                <img
+                  src={
+                    decorations.find(
+                      (decoration) => decoration.x === x && decoration.y === y
+                    ).image
+                  }
+                  alt="Decoration"
+                  className="decoration-image"
+                />
+              )}
+            </div>
           ))
         )}
       </div>
