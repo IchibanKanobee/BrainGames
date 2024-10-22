@@ -50,8 +50,32 @@ class GameSession(models.Model):
     game_score = models.IntegerField()
     game_level = models.IntegerField()
     started_at = models.DateTimeField(auto_now_add=True)
-    finished_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username} - {self.game.game_name} - {self.game_score}'
 
+
+
+class UserProfile(models.Model):
+    USER_TYPE_CHOICES = (
+        ('free', 'Free'),
+        ('registered', 'Registered'),
+        ('basic', 'Basic Plan'),
+        ('premium', 'Premium Plan'),
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default='free')
+
+    def __str__(self):
+        return self.user.username
+
+
+class GameAccessPolicy(models.Model):
+    user_type = models.CharField(max_length=20, choices=UserProfile.USER_TYPE_CHOICES)
+    games = models.ManyToManyField(Game)
+    game_types = models.ManyToManyField(GameType, blank=True)  # Grant access to entire game types if needed
+
+    def __str__(self):
+        return f"{self.user_type} access policy"
